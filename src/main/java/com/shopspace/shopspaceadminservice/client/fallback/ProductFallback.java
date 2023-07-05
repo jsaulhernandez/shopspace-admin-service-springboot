@@ -19,7 +19,7 @@ public class ProductFallback implements FallbackFactory<ProductClient> {
         logger.error("An exception occurred when calling the ProductClient", cause);
         return new ProductClient() {
             @Override
-            public PageDTO<ProductDTO> getPagedProducts(String search, Integer page, Integer size) {
+            public PageDTO<ProductDTO[]> getPagedProducts(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedProducts");
                 return null;
             }

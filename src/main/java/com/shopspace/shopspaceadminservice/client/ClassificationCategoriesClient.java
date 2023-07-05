@@ -11,7 +11,7 @@ import java.util.Optional;
 @FeignClient(contextId = "classification-categories", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/classification-categories", fallbackFactory = ClassificationCategoriesFallback.class)
 public interface ClassificationCategoriesClient {
     @GetMapping("/paged")
-    PageDTO<ClassificationCategoriesDTO> getPagedClassificationCategories(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
+    PageDTO<ClassificationCategoriesDTO[]> getPagedClassificationCategories(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
     @GetMapping("/{id}")
     Optional<ClassificationCategoriesDTO> getOneClassificationCategories(@PathVariable("id") Long id);
     @PostMapping("/create")

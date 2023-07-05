@@ -11,7 +11,7 @@ import java.util.Optional;
 @FeignClient(contextId = "color", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/color", fallbackFactory = ColorFallback.class)
 public interface ColorClient {
     @GetMapping("/paged")
-    PageDTO<ColorDTO> getPagedColors(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
+    PageDTO<ColorDTO[]> getPagedColors(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
     @GetMapping("/{id}")
      Optional<ColorDTO> getOneColor(@PathVariable("id") Long id);
     @PostMapping("/create")

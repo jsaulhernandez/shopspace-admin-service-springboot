@@ -19,7 +19,7 @@ public class ColorFallback implements FallbackFactory<ColorClient> {
         logger.error("An exception occurred when calling the ColorClient", cause);
         return new ColorClient() {
             @Override
-            public PageDTO<ColorDTO> getPagedColors(String search, Integer page, Integer size) {
+            public PageDTO<ColorDTO[]> getPagedColors(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedColors");
                 return null;
             }

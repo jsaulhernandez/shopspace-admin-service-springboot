@@ -11,7 +11,7 @@ import java.util.Optional;
 @FeignClient(contextId = "product", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/product", fallbackFactory = ProductFallback.class)
 public interface ProductClient {
     @GetMapping("/paged")
-    public PageDTO<ProductDTO> getPagedProducts(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
+    public PageDTO<ProductDTO[]> getPagedProducts(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
     @GetMapping("/{id}")
     public Optional<ProductDTO> getOneProduct(@PathVariable("id") Long id);
     @PostMapping("/create")

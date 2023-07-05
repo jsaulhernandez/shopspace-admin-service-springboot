@@ -19,7 +19,7 @@ public class ClassificationCategoriesFallback implements FallbackFactory<Classif
         logger.error("An exception occurred when calling the ClassificationCategoriesClient", cause);
         return new ClassificationCategoriesClient() {
             @Override
-            public PageDTO<ClassificationCategoriesDTO> getPagedClassificationCategories(String search, Integer page, Integer size) {
+            public PageDTO<ClassificationCategoriesDTO[]> getPagedClassificationCategories(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedClassificationCategories");
                 return null;
             }

@@ -19,7 +19,7 @@ public class TypeClassificationFallback implements FallbackFactory<TypeClassific
         logger.error("An exception occurred when calling the TypeClassificationClient", cause);
         return new TypeClassificationClient() {
             @Override
-            public PageDTO<TypeClassificationDTO> getPagedTypesClassifications(String search, Integer page, Integer size) {
+            public PageDTO<TypeClassificationDTO[]> getPagedTypesClassifications(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedTypesClassifications");
                 return null;
             }

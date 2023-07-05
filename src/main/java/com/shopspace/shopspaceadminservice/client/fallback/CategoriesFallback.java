@@ -19,7 +19,7 @@ public class CategoriesFallback implements FallbackFactory<CategoriesClient> {
         logger.error("An exception occurred when calling the CategoriesClient", cause);
         return new CategoriesClient() {
             @Override
-            public PageDTO<CategoriesDTO> getPagedCategories(String search, Integer page, Integer size) {
+            public PageDTO<CategoriesDTO[]> getPagedCategories(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedCategories");
                 return null;
             }

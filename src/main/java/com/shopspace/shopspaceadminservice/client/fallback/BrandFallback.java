@@ -18,7 +18,7 @@ public class BrandFallback implements FallbackFactory<BrandClient> {
         logger.error("An exception occurred when calling the BrandClient", cause);
         return new BrandClient() {
             @Override
-            public PageDTO<BrandDTO> getPagedBrands(String search, Integer page, Integer size) {
+            public PageDTO<BrandDTO[]> getPagedBrands(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedBrands");
                 return null;
             }
