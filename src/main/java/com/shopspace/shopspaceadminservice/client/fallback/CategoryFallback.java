@@ -3,7 +3,6 @@ package com.shopspace.shopspaceadminservice.client.fallback;
 import com.shopspace.shopspaceadminservice.client.CategoryClient;
 import com.shopspace.shopspaceadminservice.dto.CategoryDTO;
 import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
-import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
