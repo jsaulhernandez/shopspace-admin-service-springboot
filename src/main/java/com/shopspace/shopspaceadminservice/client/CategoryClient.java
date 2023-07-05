@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@FeignClient(value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}", fallbackFactory = CategoryFallback.class)
+@FeignClient(contextId = "category", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/category", fallbackFactory = CategoryFallback.class)
 public interface CategoryClient {
-    @GetMapping("/category/paged")
+    @GetMapping("/paged")
     PageDTO<CategoryDTO[]> getAllPagedCategories(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
-    @GetMapping("/category/{id}")
+    @GetMapping("/{id}")
     Optional<CategoryDTO> getOneCategory(@PathVariable("id") Long id);
-    @PostMapping("/category/create")
+    @PostMapping("/create")
     CategoryDTO create(@RequestBody CategoryDTO category);
-    @DeleteMapping("/category/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     Boolean delete(@PathVariable("id") Long id);
 }
