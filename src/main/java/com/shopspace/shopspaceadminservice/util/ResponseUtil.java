@@ -30,14 +30,12 @@ public class ResponseUtil {
     }
 
     public static ResponseEntity<ResponseDTO> conflict(Object response) {
-        var responseDTO = new ResponseDTO(HttpStatus.CONFLICT.name(), "409",
-                "The operation cannot be performed due to a conflict!", response);
+        var responseDTO = new ResponseDTO(HttpStatus.CONFLICT.name(), "409", "The operation cannot be performed due to a conflict!", response);
         return new ResponseEntity<>(responseDTO, HttpStatus.CONFLICT);
     }
 
     public static ResponseEntity<ResponseDTO> unauthorized(Object response) {
-        var responseDTO = new ResponseDTO(HttpStatus.UNAUTHORIZED.name(), "401", "You do not have valid authorization!",
-                response);
+        var responseDTO = new ResponseDTO(HttpStatus.UNAUTHORIZED.name(), "401", "You do not have valid authorization!", response);
         return new ResponseEntity<>(responseDTO, HttpStatus.UNAUTHORIZED);
     }
 
@@ -52,9 +50,7 @@ public class ResponseUtil {
     }
 
     public static ResponseEntity<ResponseDTO> clientUnavailable(Object response, String service) {
-        ResponseDTO responseDTO = new ResponseDTO(HttpStatus.SERVICE_UNAVAILABLE.name(), "503",
-                "The client's service "+service+" is not available!!!", response);
-
+        ResponseDTO responseDTO = new ResponseDTO(HttpStatus.SERVICE_UNAVAILABLE.name(), "503", "The client's service "+service+" is not available!!!", response);
         return new ResponseEntity<>(responseDTO, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
