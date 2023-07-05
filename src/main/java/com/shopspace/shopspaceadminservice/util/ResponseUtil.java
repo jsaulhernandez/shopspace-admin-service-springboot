@@ -51,9 +51,9 @@ public class ResponseUtil {
         return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public static ResponseEntity<ResponseDTO> clientUnavailable(Object response, String serviceName) {
+    public static ResponseEntity<ResponseDTO> clientUnavailable(Object response, String service) {
         ResponseDTO responseDTO = new ResponseDTO(HttpStatus.SERVICE_UNAVAILABLE.name(), "503",
-                "The client's service {} is not available.".replace("{}", serviceName), response);
+                "The client's service "+service+" is not available!!!", response);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.SERVICE_UNAVAILABLE);
     }
