@@ -50,4 +50,11 @@ public class ResponseUtil {
         var responseDTO = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.name(), "500", "Internal server error!", response);
         return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    public static ResponseEntity<ResponseDTO> clientUnavailable(Object response, String serviceName) {
+        ResponseDTO responseDTO = new ResponseDTO(HttpStatus.SERVICE_UNAVAILABLE.name(), "503",
+                "The client's service {} is not available.".replace("{}", serviceName), response);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

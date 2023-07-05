@@ -27,7 +27,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return contextPath.substring(1, index);
 	}
-	
+
 	@ExceptionHandler(FeignException.class)
 	public ResponseEntity<ResponseDTO> FeignException(FeignException feignException) throws IOException {
 		String serviceName = getMicroserviceName(feignException.request().url());
