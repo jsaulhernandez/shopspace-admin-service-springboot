@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class CategoryFallback implements FallbackFactory<CategoryClient> {
     Logger logger = LoggerFactory.getLogger(CategoryFallback.class);
@@ -20,6 +22,24 @@ public class CategoryFallback implements FallbackFactory<CategoryClient> {
             @Override
             public PageDTO<CategoryDTO[]> getAllPagedCategories(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getAllPagedCategories");
+                return null;
+            }
+
+            @Override
+            public Optional<CategoryDTO> getOneCategory(Long id) {
+                logger.error("[Fallback] not call getOneCategory");
+                return Optional.empty();
+            }
+
+            @Override
+            public CategoryDTO create(CategoryDTO category) {
+                logger.error("[Fallback] not call create");
+                return null;
+            }
+
+            @Override
+            public Boolean delete(Long id) {
+                logger.error("[Fallback] not call delete");
                 return null;
             }
         };

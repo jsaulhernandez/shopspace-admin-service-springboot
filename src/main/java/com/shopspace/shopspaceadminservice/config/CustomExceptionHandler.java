@@ -3,8 +3,10 @@ package com.shopspace.shopspaceadminservice.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
+import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
 import com.shopspace.shopspaceadminservice.util.ResponseUtil;
 import feign.FeignException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,7 +31,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<ResponseDTO> FeignException(FeignException feignException) throws IOException {
+	public ResponseEntity<ResponseDTO> feignException(FeignException feignException) throws IOException {
 		String serviceName = getMicroserviceName(feignException.request().url());
 		switch (feignException.status()) {
 			case 400 -> {
@@ -59,5 +61,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				return ResponseUtil.badRequest(resp);
 			}
 		}
+	}
+
+	@ExceptionHandler(DataNotFoundException.class)
+	public ResponseEntity<ResponseDTO> dataNotFound(DataNotFoundException ex) {
+		ResponseEntity<ResponseDTO> response = ResponseUtil.badRequest(ex.getCause());
+		ResponseDTO responseBody = response.getBody();
+
+		if (responseBody != null) {
+			responseBody.setStatusMessage(ex.getMessage());
+		}
+
+		return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 	}
 }
