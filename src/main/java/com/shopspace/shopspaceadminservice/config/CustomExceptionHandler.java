@@ -46,6 +46,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				return ResponseUtil.conflict(feignException.getMessage());
 			}
 
+			case 500 -> {
+				return ResponseUtil.internal(feignException.getMessage());
+			}
+
 			case 503 -> {
 				return ResponseUtil.clientUnavailable(feignException.getMessage(), serviceName);
 			}
