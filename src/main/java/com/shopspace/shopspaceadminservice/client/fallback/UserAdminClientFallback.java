@@ -36,7 +36,7 @@ public class UserAdminClientFallback implements FallbackFactory<UserAdminClient>
             }
 
             @Override
-            public UserAdminDTO delete(Long id) {
+            public Boolean delete(Long id) {
                 logger.error("[Fallback] not call delete");
                 return null;
             }
