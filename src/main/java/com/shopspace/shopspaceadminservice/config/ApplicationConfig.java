@@ -1,6 +1,6 @@
 package com.shopspace.shopspaceadminservice.config;
 
-import com.shopspace.shopspaceadminservice.client.UserClient;
+import com.shopspace.shopspaceadminservice.client.UserAdminClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @Configuration
 public class ApplicationConfig {
     @Autowired
-    UserClient userClient;
+    UserAdminClient userClient;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Bean
     public UserDetailsService userDetailService() {
-        return userEmail -> (UserDetails) userClient.getUserByEmail(userEmail).orElseThrow(()->new UsernameNotFoundException("User with email " + userEmail + " not found"));
+        return userEmail -> (UserDetails) userClient.getOneUserAdminByEmail(userEmail).orElseThrow(()->new UsernameNotFoundException("User with email " + userEmail + " not found"));
     }
 
     @Bean
