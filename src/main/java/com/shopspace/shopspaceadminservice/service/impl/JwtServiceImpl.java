@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.shopspace.shopspaceadminservice.service.JwtService;
+import com.shopspace.shopspaceadminservice.util.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,8 @@ public class JwtServiceImpl implements JwtService {
         return generateToken(new HashMap<>(), userDetails, jwtExpiration);
     }
 
-    public String generateRefreshToken(
-            UserDetails userDetails
-    ) {
+    @Override
+    public String generateRefreshToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails, refreshExpiration);
     }
 
@@ -46,6 +46,11 @@ public class JwtServiceImpl implements JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+
+    @Override
+    public String getExpirationToken(String jwt) {
+        return DateUtil.getUTCdatetimeAsString(this.extractExpiration(jwt));
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
