@@ -2,13 +2,9 @@ package com.shopspace.shopspaceadminservice.enums;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum WhiteListOfPath {
-
     LOGIN("/auth/**");
-
-
     private String path;
 
     WhiteListOfPath(String path) {

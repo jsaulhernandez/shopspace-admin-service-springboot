@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@FeignClient(contextId = "user", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/user-admin", fallbackFactory = UserAdminClientFallback.class)
+@FeignClient(contextId = "user-admin", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/user-admin", fallbackFactory = UserAdminClientFallback.class)
 public interface UserAdminClient {
     @GetMapping("/paged")
     PageDTO<UserAdminDTO[]> getPagedUsersAdmins(@RequestParam(value = "search", defaultValue = "") String search, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size);
