@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
+import com.shopspace.shopspaceadminservice.exception.InvalidTokenException;
 import com.shopspace.shopspaceadminservice.util.ResponseUtil;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		String contextPath = UriComponentsBuilder.fromUriString(url).build().getPath();
 		int index = Objects.requireNonNull(contextPath).indexOf("/", 1);
 
-		if (index == -1) {
-			return contextPath;
-		}
+		if (index == -1) return contextPath;
 
 		return contextPath.substring(1, index);
 	}
@@ -56,12 +55,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 			default -> {
 				Map<String, Object> resp = null;
+
 				var body = feignException.responseBody();
+
 				if (body.isPresent()) {
 					byte[] response = body.get().array();
 					resp = new ObjectMapper().readValue(response, new TypeReference<>() {
 					});
 				}
+
 				return ResponseUtil.badRequest(resp);
 			}
 		}
@@ -72,10 +74,18 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		ResponseEntity<ResponseDTO> response = ResponseUtil.badRequest(ex.getCause());
 		ResponseDTO responseBody = response.getBody();
 
-		if (responseBody != null) {
-			responseBody.setStatusMessage(ex.getMessage());
-		}
+		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
 
 		return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(InvalidTokenException.class)
+	public ResponseEntity<ResponseDTO> invalidToken(InvalidTokenException ex) {
+		ResponseEntity<ResponseDTO> response = ResponseUtil.unauthorized(ex.getCause());
+		ResponseDTO responseBody = response.getBody();
+
+		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
+
+		return new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);
 	}
 }

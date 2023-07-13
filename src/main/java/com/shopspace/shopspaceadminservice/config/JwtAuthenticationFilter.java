@@ -1,5 +1,6 @@
 package com.shopspace.shopspaceadminservice.config;
 
+import com.google.common.net.HttpHeaders;
 import com.shopspace.shopspaceadminservice.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter  extends OncePerRequestFilter {
-    private static Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     @Autowired
     JwtService jwtService;
     @Autowired
@@ -31,9 +32,9 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.info("*** INSIDE FILTER {} ***", getFilterName());
+        log.info("*** INSIDE doFilterInternal {} ***", getFilterName());
 
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwt;
         final String userEmail;
 
