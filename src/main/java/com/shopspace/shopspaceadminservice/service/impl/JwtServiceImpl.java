@@ -4,10 +4,13 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
+import com.google.common.net.HttpHeaders;
 import com.shopspace.shopspaceadminservice.service.JwtService;
 import com.shopspace.shopspaceadminservice.util.DateUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.util.StringUtils;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -33,8 +37,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails, jwtExpiration);
+    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+        return generateToken(claims, userDetails, jwtExpiration);
     }
 
     @Override
@@ -51,6 +55,21 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String getExpirationToken(String jwt) {
         return DateUtil.getUTCdatetimeAsString(this.extractExpiration(jwt));
+    }
+
+    @Override
+    public Optional<String> getJwtFromRequest(HttpServletRequest request){
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) return Optional.of(authHeader.substring(7));
+
+        return Optional.empty();
+    }
+
+    @Override
+    public String getPropertyByToken(String jwt, String property) {
+        Claims claims = extractAllClaims(jwt);
+        return (String) claims.get(property);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
