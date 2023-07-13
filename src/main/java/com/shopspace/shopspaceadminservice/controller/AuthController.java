@@ -5,7 +5,6 @@ import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
 import com.shopspace.shopspaceadminservice.service.AuthService;
 import com.shopspace.shopspaceadminservice.util.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
