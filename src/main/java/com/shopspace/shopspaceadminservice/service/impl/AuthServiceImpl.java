@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
             final String ipAddressByToken = jwtService.getPropertyByToken(oldToken.get(), "ip");
             final String userAgentByToken = jwtService.getPropertyByToken(oldToken.get(), "ua");
 
-            if(!ipAddress.contentEquals(ipAddressByToken) || !userAgent.contentEquals(userAgentByToken)) throw new BadCredentialsException(MessagesExceptions.BAD_CREDENTIALS);
+            if(!ipAddress.contentEquals(ipAddressByToken) || !userAgent.contentEquals(userAgentByToken)) throw new HeadersNotFoundException(MessagesExceptions.HEADERS_NOT_FOUND);
 
             return generateUserData(request, user);
         } catch (ExpiredJwtException e) {
