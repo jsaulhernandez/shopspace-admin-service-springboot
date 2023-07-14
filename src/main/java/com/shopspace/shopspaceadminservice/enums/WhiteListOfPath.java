@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum WhiteListOfPath {
-    LOGIN("/auth/**");
+    AUTH("/auth/**");
     private String path;
 
     WhiteListOfPath(String path) {

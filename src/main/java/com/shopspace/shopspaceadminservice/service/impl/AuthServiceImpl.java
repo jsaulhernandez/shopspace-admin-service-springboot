@@ -49,14 +49,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO refreshToken(HttpServletRequest request){
+        final Optional<String> oldToken = jwtService.getJwtFromRequest(request);
+        UserAdminDTO user;
+
+        if (oldToken.isEmpty()) throw new InvalidTokenException(MessagesExceptions.INVALID_TOKEN);
+
         try {
-            final Optional<String> oldToken = jwtService.getJwtFromRequest(request);
+            String userName  = jwtService.extractUserName(oldToken.get());
 
-            if (oldToken.isEmpty()) throw new InvalidTokenException(MessagesExceptions.INVALID_TOKEN);
-
-            String userName = jwtService.extractUserName(oldToken.get());
-
-            UserAdminDTO user = userAdminClient.getOneUserAdminByEmail(userName).orElseThrow(() -> new DataNotFoundException("User with email " + userName + " does not exists."));
+            user = userAdminClient.getOneUserAdminByEmail(userName).orElseThrow(() -> new DataNotFoundException("User with email " + userName + " does not exists."));
 
             boolean isValidateToken = jwtService.isTokenValid(oldToken.get(), user);
 
@@ -70,7 +71,13 @@ public class AuthServiceImpl implements AuthService {
             if(!ipAddress.contentEquals(ipAddressByToken) || !userAgent.contentEquals(userAgentByToken)) throw new BadCredentialsException(MessagesExceptions.BAD_CREDENTIALS);
 
             return generateUserData(request, user);
-        } catch (IllegalArgumentException | MalformedJwtException | ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
+            log.error("JWT expired {}", e.getMessage());
+            String userName = e.getClaims().getSubject();
+            user = userAdminClient.getOneUserAdminByEmail(userName).orElseThrow(() -> new DataNotFoundException("User with email " + userName + " does not exists."));
+
+            return generateUserData(request, user);
+        } catch (IllegalArgumentException | MalformedJwtException e) {
             log.error("Error in refreshToken {}", e.getMessage());
             throw new InvalidTokenException(MessagesExceptions.EXCEPTION_TOKEN);
         }
@@ -94,6 +101,7 @@ public class AuthServiceImpl implements AuthService {
         claims.put("ip", ShopSpaceAdminUtil.getClientIp(request));
         claims.put("us", ShopSpaceAdminUtil.getUserAgent(request));
 
+        log.info("Generating JWT for {}", user.getEmail());
         var jwt = jwtService.generateToken(claims, user);
         var expiration = jwtService.getExpirationToken(jwt);
 

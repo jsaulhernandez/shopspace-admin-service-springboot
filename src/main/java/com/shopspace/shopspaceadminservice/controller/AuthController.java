@@ -20,7 +20,7 @@ public class AuthController {
         return ResponseUtil.ok(authService.authenticate(request, authRequestDTO));
     }
 
-    @PostMapping("/refresh-token")
+    @GetMapping("/refresh-token")
     public ResponseEntity<ResponseDTO> refreshToken(HttpServletRequest request) {
         return ResponseUtil.ok(authService.refreshToken(request));
     }
@@ -28,5 +28,10 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity<ResponseDTO> logout(HttpServletRequest request) {
         return ResponseUtil.ok(authService.logout(request));
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test";
     }
 }
