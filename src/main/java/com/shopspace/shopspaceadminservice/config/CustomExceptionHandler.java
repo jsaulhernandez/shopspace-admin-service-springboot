@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
+import com.shopspace.shopspaceadminservice.exception.HeadersNotFoundException;
 import com.shopspace.shopspaceadminservice.exception.InvalidTokenException;
 import com.shopspace.shopspaceadminservice.util.ResponseUtil;
 import feign.FeignException;
@@ -87,5 +88,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
 
 		return new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(HeadersNotFoundException.class)
+	public ResponseEntity<ResponseDTO> headNotFound(HeadersNotFoundException ex) {
+		ResponseEntity<ResponseDTO> response = ResponseUtil.preconditionFailed(ex.getCause());
+		ResponseDTO responseBody = response.getBody();
+
+		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
+
+		return new ResponseEntity<>(responseBody, HttpStatus.PRECONDITION_FAILED);
 	}
 }

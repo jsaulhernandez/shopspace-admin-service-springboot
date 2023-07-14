@@ -6,6 +6,7 @@ import com.shopspace.shopspaceadminservice.dto.AuthRequestDTO;
 import com.shopspace.shopspaceadminservice.dto.AuthResponseDTO;
 import com.shopspace.shopspaceadminservice.dto.UserAdminDTO;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
+import com.shopspace.shopspaceadminservice.exception.HeadersNotFoundException;
 import com.shopspace.shopspaceadminservice.exception.MessagesExceptions;
 import com.shopspace.shopspaceadminservice.exception.InvalidTokenException;
 import com.shopspace.shopspaceadminservice.service.AuthService;
@@ -54,6 +55,9 @@ public class AuthServiceImpl implements AuthService {
 
         if (oldToken.isEmpty()) throw new InvalidTokenException(MessagesExceptions.INVALID_TOKEN);
 
+        final String ipAddress = ShopSpaceAdminUtil.getClientIp(request);
+        final String userAgent = ShopSpaceAdminUtil.getUserAgent(request);
+
         try {
             String userName  = jwtService.extractUserName(oldToken.get());
 
@@ -63,8 +67,6 @@ public class AuthServiceImpl implements AuthService {
 
             if (!isValidateToken) throw new BadCredentialsException(MessagesExceptions.BAD_CREDENTIALS);
 
-            final String ipAddress = ShopSpaceAdminUtil.getClientIp(request);
-            final String userAgent = ShopSpaceAdminUtil.getUserAgent(request);
             final String ipAddressByToken = jwtService.getPropertyByToken(oldToken.get(), "ip");
             final String userAgentByToken = jwtService.getPropertyByToken(oldToken.get(), "ua");
 
@@ -73,7 +75,13 @@ public class AuthServiceImpl implements AuthService {
             return generateUserData(request, user);
         } catch (ExpiredJwtException e) {
             log.error("JWT expired {}", e.getMessage());
+
             String userName = e.getClaims().getSubject();
+            final String ipAddressByExpiredToken = (String) e.getClaims().get("ip");
+            final String userAgentByExpiredToken = (String) e.getClaims().get("ua");
+
+            if(!ipAddress.contentEquals(ipAddressByExpiredToken) || !userAgent.contentEquals(userAgentByExpiredToken)) throw new HeadersNotFoundException(MessagesExceptions.HEADERS_NOT_FOUND);
+
             user = userAdminClient.getOneUserAdminByEmail(userName).orElseThrow(() -> new DataNotFoundException("User with email " + userName + " does not exists."));
 
             return generateUserData(request, user);
@@ -99,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponseDTO generateUserData(HttpServletRequest request, UserAdminDTO user){
         final Map<String, Object> claims = new HashMap<>();
         claims.put("ip", ShopSpaceAdminUtil.getClientIp(request));
-        claims.put("us", ShopSpaceAdminUtil.getUserAgent(request));
+        claims.put("ua", ShopSpaceAdminUtil.getUserAgent(request));
 
         log.info("Generating JWT for {}", user.getEmail());
         var jwt = jwtService.generateToken(claims, user);
