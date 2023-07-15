@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         var user = userAdminClient.getOneUserAdminByEmail(authRequestDTO.getEmail()).orElseThrow(()-> new DataNotFoundException("User with email " + authRequestDTO.getEmail() + " does not exists."));
 
-        return generateUserData(request, user);
+        return generateUserData(request, user, false);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
             if(!ipAddress.contentEquals(ipAddressByToken) || !userAgent.contentEquals(userAgentByToken)) throw new HeadersNotFoundException(MessagesExceptions.HEADERS_NOT_FOUND);
 
-            return generateUserData(request, user);
+            return generateUserData(request, user, true);
         } catch (ExpiredJwtException e) {
             log.error("JWT expired {}", e.getMessage());
 
@@ -84,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
 
             user = userAdminClient.getOneUserAdminByEmail(userName).orElseThrow(() -> new DataNotFoundException("User with email " + userName + " does not exists."));
 
-            return generateUserData(request, user);
+            return generateUserData(request, user, true);
         } catch (IllegalArgumentException | MalformedJwtException e) {
             log.error("Error in refreshToken {}", e.getMessage());
             throw new InvalidTokenException(MessagesExceptions.EXCEPTION_TOKEN);
@@ -104,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
-    public AuthResponseDTO generateUserData(HttpServletRequest request, UserAdminDTO user){
+    public AuthResponseDTO generateUserData(HttpServletRequest request, UserAdminDTO user, Boolean isRefreshToken){
         final Map<String, Object> claims = new HashMap<>();
         claims.put("ip", ShopSpaceAdminUtil.getClientIp(request));
         claims.put("ua", ShopSpaceAdminUtil.getUserAgent(request));
@@ -113,6 +113,6 @@ public class AuthServiceImpl implements AuthService {
         var jwt = jwtService.generateToken(claims, user);
         var expiration = jwtService.getExpirationToken(jwt);
 
-        return new AuthResponseDTO(user, jwt, expiration);
+        return new AuthResponseDTO(isRefreshToken ? null : user, jwt, expiration);
     }
 }
