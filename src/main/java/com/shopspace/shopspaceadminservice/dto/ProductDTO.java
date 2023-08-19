@@ -6,34 +6,34 @@ import java.util.List;
 
 public class ProductDTO {
     private Long id;
-    private String name;
     private String title;
+    private String name;
     private String description;
     private BigDecimal price;
-    private Integer stock;
     private String model;
     private String modelNumber;
     private Date releaseDate;
+    private List<ViewProductDTO> viewProducts;
     private List<ProductDetailDTO> productDetails;
+    private TypeClassificationDTO typeClassification;
     private BrandDTO brand;
-    List<ColorDTO> colors;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String title, String description, BigDecimal price, Integer stock, String model, String modelNumber, Date releaseDate, List<ProductDetailDTO> productDetails, BrandDTO brand, List<ColorDTO> colors) {
+    public ProductDTO(Long id, String title, String name, String description, BigDecimal price, String model, String modelNumber, Date releaseDate, List<ViewProductDTO> viewProducts, List<ProductDetailDTO> productDetails, TypeClassificationDTO typeClassification, BrandDTO brand) {
         this.id = id;
-        this.name = name;
         this.title = title;
+        this.name = name;
         this.description = description;
         this.price = price;
-        this.stock = stock;
         this.model = model;
         this.modelNumber = modelNumber;
         this.releaseDate = releaseDate;
+        this.viewProducts = viewProducts;
         this.productDetails = productDetails;
+        this.typeClassification = typeClassification;
         this.brand = brand;
-        this.colors = colors;
     }
 
     public Long getId() {
@@ -44,20 +44,20 @@ public class ProductDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -74,14 +74,6 @@ public class ProductDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
     }
 
     public String getModel() {
@@ -108,12 +100,28 @@ public class ProductDTO {
         this.releaseDate = releaseDate;
     }
 
+    public List<ViewProductDTO> getViewProducts() {
+        return viewProducts;
+    }
+
+    public void setViewProducts(List<ViewProductDTO> viewProducts) {
+        this.viewProducts = viewProducts;
+    }
+
     public List<ProductDetailDTO> getProductDetails() {
         return productDetails;
     }
 
     public void setProductDetails(List<ProductDetailDTO> productDetails) {
         this.productDetails = productDetails;
+    }
+
+    public TypeClassificationDTO getTypeClassification() {
+        return typeClassification;
+    }
+
+    public void setTypeClassification(TypeClassificationDTO typeClassification) {
+        this.typeClassification = typeClassification;
     }
 
     public BrandDTO getBrand() {
@@ -124,16 +132,21 @@ public class ProductDTO {
         this.brand = brand;
     }
 
-    public List<ColorDTO> getColors() {
-        return colors;
-    }
-
-    public void setColors(List<ColorDTO> colors) {
-        this.colors = colors;
-    }
-
     @Override
     public String toString() {
-        return "ProductDTO{" + "id=" + id + ", name='" + name + '\'' + ", title='" + title + '\'' + ", description='" + description + '\'' + ", price=" + price + ", stock=" + stock + ", model='" + model + '\'' + ", modelNumber='" + modelNumber + '\'' + ", releaseDate=" + releaseDate + ", productDetails=" + productDetails + ", brand=" + brand + ", colors=" + colors + '}';
+        return "ProductDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", model='" + model + '\'' +
+                ", modelNumber='" + modelNumber + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", viewProducts=" + viewProducts +
+                ", productDetails=" + productDetails +
+                ", typeClassification=" + typeClassification +
+                ", brand=" + brand +
+                '}';
     }
 }
