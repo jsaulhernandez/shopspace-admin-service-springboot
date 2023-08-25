@@ -4,16 +4,16 @@ public class CategoriesDTO {
     private Long id;
     private String name;
     private Integer status;
-    private CategoryDTO categoryDTO;
+    private CategoryDTO category;
 
     public CategoriesDTO() {
     }
 
-    public CategoriesDTO(Long id, String name, Integer status, CategoryDTO categoryDTO) {
+    public CategoriesDTO(Long id, String name, Integer status, CategoryDTO category) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.categoryDTO = categoryDTO;
+        this.category = category;
     }
 
     public Long getId() {
@@ -40,16 +40,21 @@ public class CategoriesDTO {
         this.status = status;
     }
 
-    public CategoryDTO getCategoryDTO() {
-        return categoryDTO;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setCategoryDTO(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "CategoriesDTO{" + "id=" + id + ", name='" + name + '\'' + ", status=" + status + ", categoryDTO=" + categoryDTO + '}';
+        return "CategoriesDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", category=" + category +
+                '}';
     }
 }
