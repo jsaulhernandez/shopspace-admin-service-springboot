@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,6 +22,12 @@ public class ClassificationCategoriesFallback implements FallbackFactory<Classif
             @Override
             public PageDTO<ClassificationCategoriesDTO[]> getPagedClassificationCategories(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedClassificationCategories");
+                return null;
+            }
+
+            @Override
+            public List<ClassificationCategoriesDTO> getClassificationCategoriesByStatus(Integer status) {
+                logger.error("[Fallback] not call getClassificationCategoriesByStatus");
                 return null;
             }
 

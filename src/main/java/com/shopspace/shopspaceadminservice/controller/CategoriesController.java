@@ -19,6 +19,11 @@ public class CategoriesController {
         return ResponseUtil.page(categoriesService.getAllPagedCategories(search, page, size));
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<ResponseDTO> getAllActiveCategories(){
+        return ResponseUtil.ok(categoriesService.getAllActiveCategories());
+    }
+
     @PostMapping()
     public ResponseEntity<ResponseDTO> create(@RequestBody CategoriesDTO categoriesDTO){
         return ResponseUtil.created(categoriesService.create(categoriesDTO));

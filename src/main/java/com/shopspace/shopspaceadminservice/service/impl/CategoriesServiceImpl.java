@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,11 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public PageDTO<CategoriesDTO[]> getAllPagedCategories(String search, Integer page, Integer size) {
         return categoriesClient.getPagedCategories(search, page, size);
+    }
+
+    @Override
+    public List<CategoriesDTO> getAllActiveCategories() {
+        return categoriesClient.getCategoriesByStatus(1);
     }
 
     @Override

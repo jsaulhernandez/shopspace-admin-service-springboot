@@ -6,12 +6,15 @@ import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @FeignClient(contextId = "classification-categories", value = "${shopspace.feign.config.name}", url = "${shopspace.feign.config.url}/classification-categories", fallbackFactory = ClassificationCategoriesFallback.class)
 public interface ClassificationCategoriesClient {
     @GetMapping("/paged")
     PageDTO<ClassificationCategoriesDTO[]> getPagedClassificationCategories(@RequestParam String search, @RequestParam Integer page, @RequestParam Integer size);
+    @GetMapping("/by-status")
+    List<ClassificationCategoriesDTO> getClassificationCategoriesByStatus(@RequestParam Integer status);
     @GetMapping("/{id}")
     Optional<ClassificationCategoriesDTO> getOneClassificationCategories(@PathVariable("id") Long id);
     @PostMapping("/create")
