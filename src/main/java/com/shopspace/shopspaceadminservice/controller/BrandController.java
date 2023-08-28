@@ -19,6 +19,11 @@ public class BrandController {
         return ResponseUtil.page(brandService.getAllPagedBrands(search, page, size));
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<ResponseDTO> getAllActiveBrands(){
+        return ResponseUtil.ok(brandService.getAllActiveBrands());
+    }
+
     @PostMapping()
     public ResponseEntity<ResponseDTO> create(@RequestBody BrandDTO brandDTO){
         return ResponseUtil.created(brandService.create(brandDTO));

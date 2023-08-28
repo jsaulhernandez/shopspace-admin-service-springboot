@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -20,6 +21,12 @@ public class BrandFallback implements FallbackFactory<BrandClient> {
             @Override
             public PageDTO<BrandDTO[]> getPagedBrands(String search, Integer page, Integer size) {
                 logger.error("[Fallback] not call getPagedBrands");
+                return null;
+            }
+
+            @Override
+            public List<BrandDTO> getBrandsByStatus(Integer status) {
+                logger.error("[Fallback] not call getBrandsByStatus");
                 return null;
             }
 
