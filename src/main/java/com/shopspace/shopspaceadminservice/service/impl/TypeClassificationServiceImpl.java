@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,11 @@ public class TypeClassificationServiceImpl implements TypeClassificationService 
     @Override
     public PageDTO<TypeClassificationDTO[]> getAllPagedTypesClassifications(String search, Integer page, Integer size) {
         return typeClassificationClient.getPagedTypesClassifications(search, page, size);
+    }
+
+    @Override
+    public List<TypeClassificationDTO> getActiveTypesClassifications() {
+        return typeClassificationClient.getTypesClassificationsByStatus(1);
     }
 
     @Override

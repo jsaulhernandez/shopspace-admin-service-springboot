@@ -19,6 +19,11 @@ public class TypeClassificationController {
         return ResponseUtil.page(typeClassificationService.getAllPagedTypesClassifications(search, page, size));
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<ResponseDTO> getAllActiveTypesClassifications(){
+        return ResponseUtil.ok(typeClassificationService.getActiveTypesClassifications());
+    }
+
     @PostMapping()
     public ResponseEntity<ResponseDTO> create(@RequestBody TypeClassificationDTO typeClassificationDTO){
         return ResponseUtil.created(typeClassificationService.create(typeClassificationDTO));
