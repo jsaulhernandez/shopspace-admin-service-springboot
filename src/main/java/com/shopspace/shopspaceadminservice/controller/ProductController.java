@@ -1,6 +1,7 @@
 package com.shopspace.shopspaceadminservice.controller;
 
 import com.shopspace.shopspaceadminservice.dto.ProductDTO;
+import com.shopspace.shopspaceadminservice.dto.ViewProductDTO;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
 import com.shopspace.shopspaceadminservice.service.ProductService;
 import com.shopspace.shopspaceadminservice.util.ResponseUtil;
@@ -32,5 +33,11 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> delete(@PathVariable("id") Long id){
         return ResponseUtil.ok(productService.delete(id));
+    }
+
+    //Todo: methods for view product
+    @PutMapping("/view/{id}")
+    public ResponseEntity<ResponseDTO> updateViewProduct(@RequestBody ViewProductDTO viewProductDTO, @PathVariable("id") Long id){
+        return ResponseUtil.ok(productService.updateViewProduct(viewProductDTO, id));
     }
 }
