@@ -14,7 +14,7 @@ public interface CouponClient {
     PageDTO<CouponDTO[]> getAllCoupons(@RequestParam(value = "search", defaultValue = "") String search, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size);
     @GetMapping("/{id}")
     Optional<CouponDTO> getOneCoupon(@PathVariable("id") Long id);
-    @GetMapping("/code/{id}")
+    @GetMapping("/code/{code}")
     Optional<CouponDTO> getCouponByCode(@PathVariable("code") String code);
     @PostMapping("/create")
     CouponDTO create(@RequestBody CouponDTO couponDTO);
