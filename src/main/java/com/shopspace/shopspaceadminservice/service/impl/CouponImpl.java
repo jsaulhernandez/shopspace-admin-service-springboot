@@ -3,6 +3,7 @@ package com.shopspace.shopspaceadminservice.service.impl;
 import com.shopspace.shopspaceadminservice.client.CouponClient;
 import com.shopspace.shopspaceadminservice.dto.CouponDTO;
 import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
+import com.shopspace.shopspaceadminservice.exception.ConflictException;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
 import com.shopspace.shopspaceadminservice.service.CouponService;
 import org.slf4j.Logger;
@@ -25,6 +26,14 @@ public class CouponImpl implements CouponService {
 
     @Override
     public CouponDTO create(CouponDTO couponDTO){
+
+        Optional<CouponDTO> coupon = couponClient.getCouponByCode(couponDTO.getCode());
+
+        if (coupon.isPresent()) {
+            if (coupon.get().getCode().contentEquals(couponDTO.getCode()))
+                throw new ConflictException("Coupon already exists.");
+        }
+
         return couponClient.create(couponDTO);
     }
 
@@ -33,6 +42,15 @@ public class CouponImpl implements CouponService {
         Optional<CouponDTO> oldCoupon = couponClient.getOneCoupon(id);
 
         if (oldCoupon.isEmpty()) throw new DataNotFoundException("Coupon to update doesn't exists.");
+
+        if (!oldCoupon.get().getCode().contentEquals(couponDTO.getCode())) {
+            Optional<CouponDTO> coupon = couponClient.getCouponByCode(couponDTO.getCode());
+
+            if (coupon.isPresent()) {
+                if (coupon.get().getCode().contentEquals(couponDTO.getCode()))
+                    throw new ConflictException("Coupon already exists.");
+            }
+        }
 
         couponDTO.setId(oldCoupon.get().getId());
 

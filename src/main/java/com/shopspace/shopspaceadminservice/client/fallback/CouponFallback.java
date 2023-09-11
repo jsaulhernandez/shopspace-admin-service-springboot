@@ -31,6 +31,12 @@ public class CouponFallback implements FallbackFactory<CouponClient> {
             }
 
             @Override
+            public Optional<CouponDTO> getCouponByCode(String code) {
+                logger.error("[Fallback] not call getCouponByCode");
+                return Optional.empty();
+            }
+
+            @Override
             public CouponDTO create(CouponDTO couponDTO) {
                 logger.error("[Fallback] not call create");
                 return null;

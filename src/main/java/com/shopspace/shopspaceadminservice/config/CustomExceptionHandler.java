@@ -3,6 +3,7 @@ package com.shopspace.shopspaceadminservice.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
+import com.shopspace.shopspaceadminservice.exception.ConflictException;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
 import com.shopspace.shopspaceadminservice.exception.HeadersNotFoundException;
 import com.shopspace.shopspaceadminservice.exception.InvalidTokenException;
@@ -98,5 +99,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
 
 		return new ResponseEntity<>(responseBody, HttpStatus.PRECONDITION_FAILED);
+	}
+
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<ResponseDTO> conflict(ConflictException ex) {
+		ResponseEntity<ResponseDTO> response = ResponseUtil.conflict(ex.getCause());
+		ResponseDTO responseBody = response.getBody();
+
+		if (responseBody != null) responseBody.setStatusMessage(ex.getMessage());
+
+		return new ResponseEntity<>(responseBody, HttpStatus.CONFLICT);
 	}
 }
