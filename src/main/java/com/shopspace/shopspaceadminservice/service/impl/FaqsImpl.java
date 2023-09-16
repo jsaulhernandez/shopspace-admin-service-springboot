@@ -8,9 +8,11 @@ import com.shopspace.shopspaceadminservice.service.FaqsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class FaqsImpl implements FaqsService {
     Logger logger = LoggerFactory.getLogger(FaqsImpl.class);
     @Autowired
