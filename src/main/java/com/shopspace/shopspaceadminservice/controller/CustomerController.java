@@ -17,7 +17,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @GetMapping("/paged")
-    public ResponseEntity<ResponseDTO> getAllPagedCustomers(@RequestParam(value = "search", defaultValue = "") String search, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size){
-        return ResponseUtil.page(customerService.getAllPagedCustomers(search, page, size));
+    public ResponseEntity<ResponseDTO> getAllPagedUsersCustomers(@RequestParam(value = "search", defaultValue = "") String search, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size){
+        return ResponseUtil.page(customerService.getAllPagedUsersCustomers(search, page, size));
     }
 }

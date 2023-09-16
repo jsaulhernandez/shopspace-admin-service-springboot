@@ -1,7 +1,7 @@
 package com.shopspace.shopspaceadminservice.service.impl;
 
 import com.shopspace.shopspaceadminservice.client.CustomerClient;
-import com.shopspace.shopspaceadminservice.dto.CustomerDTO;
+import com.shopspace.shopspaceadminservice.dto.UserCustomerDTO;
 import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
 import com.shopspace.shopspaceadminservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ public class CustomerImpl implements CustomerService {
     private CustomerClient customerClient;
 
     @Override
-    public PageDTO<CustomerDTO[]> getAllPagedCustomers(String search, Integer page, Integer size) {
-        return customerClient.getPagedCustomers(search, page, size);
+    public PageDTO<UserCustomerDTO[]> getAllPagedUsersCustomers(String search, Integer page, Integer size) {
+        return customerClient.getAllPagedUsersCustomers(search, page, size);
     }
 }

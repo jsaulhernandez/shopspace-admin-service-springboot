@@ -1,7 +1,7 @@
 package com.shopspace.shopspaceadminservice.client.fallback;
 
 import com.shopspace.shopspaceadminservice.client.CustomerClient;
-import com.shopspace.shopspaceadminservice.dto.CustomerDTO;
+import com.shopspace.shopspaceadminservice.dto.UserCustomerDTO;
 import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +15,8 @@ public class CustomerFallback  implements FallbackFactory<CustomerClient> {
         logger.error("An exception occurred when calling the CustomerClient", cause);
         return new CustomerClient() {
             @Override
-            public PageDTO<CustomerDTO[]> getPagedCustomers(String search, Integer page, Integer size) {
-                logger.error("[Fallback] not call getPagedCustomers");
+            public PageDTO<UserCustomerDTO[]> getAllPagedUsersCustomers(String search, Integer page, Integer size) {
+                logger.error("[Fallback] not call getAllPagedUsersCustomers");
                 return null;
             }
         };
