@@ -1,6 +1,5 @@
 package com.shopspace.shopspaceadminservice.controller;
 
-import com.shopspace.shopspaceadminservice.dto.BrandDTO;
 import com.shopspace.shopspaceadminservice.dto.UserCustomerDTO;
 import com.shopspace.shopspaceadminservice.dto.response.ResponseDTO;
 import com.shopspace.shopspaceadminservice.service.CustomerService;
