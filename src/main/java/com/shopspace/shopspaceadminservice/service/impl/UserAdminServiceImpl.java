@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +25,16 @@ public class UserAdminServiceImpl implements UserAdminService {
 
     @Override
     public PageDTO<UserAdminDTO[]> getPagedUsersAdmins(String search, Integer page, Integer size) {
-        return userAdminClient.getPagedUsersAdmins(search, page, size);
+        PageDTO<UserAdminDTO[]> response = userAdminClient.getPagedUsersAdmins(search, page, size);
+        UserAdminDTO[] data = response.getContent();
+
+        // setting null to password field
+        List<UserAdminDTO> newData = Arrays.stream(data).peek(userAdminDTO -> userAdminDTO.setPassword(null)).toList();
+
+        // convert list to array
+        response.setContent(newData.toArray(new UserAdminDTO[0]));
+
+        return response;
     }
 
     @Override
@@ -37,13 +48,15 @@ public class UserAdminServiceImpl implements UserAdminService {
     public UserAdminDTO update(UserAdminDTO userAdminDTO, Long id) {
         Optional<UserAdminDTO> oldUserAdmin = userAdminClient.getOneUserAdmin(id);
 
-        if (oldUserAdmin.isEmpty()) throw new DataNotFoundException("El usuario admin a modificar no existe.");
+        if (oldUserAdmin.isEmpty()) throw new DataNotFoundException("User to update doesn't exists.");
 
         userAdminDTO.setId(oldUserAdmin.get().getId());
 
         if(userAdminDTO.getPassword().contentEquals("default")) {
             userAdminDTO.setPassword(oldUserAdmin.get().getPassword());
         } else {
+            if (userAdminDTO.getPassword().contentEquals("") || userAdminDTO.getPassword() == null) throw new DataNotFoundException("The password is empty or null.");
+
             String password = passwordEncoder.encoder().encode(userAdminDTO.getPassword());
             userAdminDTO.setPassword(password);
         }
