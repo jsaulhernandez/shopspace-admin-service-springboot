@@ -12,7 +12,4 @@ public interface ProductService {
     ProductDTO update(ProductDTO productDTO, Long id);
 
     Boolean delete(Long id);
-
-    //Todo: methods for view product
-    ViewProductDTO updateViewProduct(ViewProductDTO viewProductDTO, Long id);
 }

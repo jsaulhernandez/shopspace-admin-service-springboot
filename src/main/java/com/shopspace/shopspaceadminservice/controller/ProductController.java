@@ -34,10 +34,4 @@ public class ProductController {
     public ResponseEntity<ResponseDTO> delete(@PathVariable("id") Long id){
         return ResponseUtil.ok(productService.delete(id));
     }
-
-    //Todo: methods for view product
-    @PutMapping("/view/{id}")
-    public ResponseEntity<ResponseDTO> updateViewProduct(@RequestBody ViewProductDTO viewProductDTO, @PathVariable("id") Long id){
-        return ResponseUtil.ok(productService.updateViewProduct(viewProductDTO, id));
-    }
 }

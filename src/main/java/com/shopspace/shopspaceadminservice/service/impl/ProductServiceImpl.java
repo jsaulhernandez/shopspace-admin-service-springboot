@@ -1,9 +1,7 @@
 package com.shopspace.shopspaceadminservice.service.impl;
 
 import com.shopspace.shopspaceadminservice.client.ProductClient;
-import com.shopspace.shopspaceadminservice.client.ViewProductClient;
 import com.shopspace.shopspaceadminservice.dto.ProductDTO;
-import com.shopspace.shopspaceadminservice.dto.ViewProductDTO;
 import com.shopspace.shopspaceadminservice.dto.pageable.PageDTO;
 import com.shopspace.shopspaceadminservice.exception.DataNotFoundException;
 import com.shopspace.shopspaceadminservice.service.ProductService;
@@ -19,8 +17,7 @@ public class ProductServiceImpl implements ProductService {
     Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     ProductClient productClient;
-    @Autowired
-    ViewProductClient viewProductClient;
+
     @Override
     public PageDTO<ProductDTO[]> getAllPagedProducts(String search, Integer page, Integer size) {
         return productClient.getPagedProducts(search, page, size);
@@ -48,17 +45,5 @@ public class ProductServiceImpl implements ProductService {
         if (product.isEmpty()) throw new DataNotFoundException("El producto a eliminar no existe.");
 
         return productClient.delete(id);
-    }
-
-    //Todo: methods for view product
-    @Override
-    public ViewProductDTO updateViewProduct(ViewProductDTO viewProductDTO, Long id){
-        Optional<ViewProductDTO> oldViewProduct = viewProductClient.getOneViewProduct(id);
-
-        if (oldViewProduct.isEmpty()) throw new DataNotFoundException("The view product to update doesn't exists.");
-
-        viewProductDTO.setId(oldViewProduct.get().getId());
-
-        return viewProductClient.create(viewProductDTO);
     }
 }
