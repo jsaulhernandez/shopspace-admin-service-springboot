@@ -13,6 +13,7 @@ public class ProductDTO {
     private String model;
     private String modelNumber;
     private Date releaseDate;
+    private Integer status;
     private List<ViewProductDTO> viewProducts;
     private List<ProductDetailDTO> productDetails;
     private TypeClassificationDTO typeClassification;
@@ -21,7 +22,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String title, String name, String description, BigDecimal price, String model, String modelNumber, Date releaseDate, List<ViewProductDTO> viewProducts, List<ProductDetailDTO> productDetails, TypeClassificationDTO typeClassification, BrandDTO brand) {
+    public ProductDTO(Long id, String title, String name, String description, BigDecimal price, String model, String modelNumber, Date releaseDate, Integer status, List<ViewProductDTO> viewProducts, List<ProductDetailDTO> productDetails, TypeClassificationDTO typeClassification, BrandDTO brand) {
         this.id = id;
         this.title = title;
         this.name = name;
@@ -30,6 +31,7 @@ public class ProductDTO {
         this.model = model;
         this.modelNumber = modelNumber;
         this.releaseDate = releaseDate;
+        this.status = status;
         this.viewProducts = viewProducts;
         this.productDetails = productDetails;
         this.typeClassification = typeClassification;
@@ -100,6 +102,14 @@ public class ProductDTO {
         this.releaseDate = releaseDate;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public List<ViewProductDTO> getViewProducts() {
         return viewProducts;
     }
@@ -143,6 +153,7 @@ public class ProductDTO {
                 ", model='" + model + '\'' +
                 ", modelNumber='" + modelNumber + '\'' +
                 ", releaseDate=" + releaseDate +
+                ", status=" + status +
                 ", viewProducts=" + viewProducts +
                 ", productDetails=" + productDetails +
                 ", typeClassification=" + typeClassification +

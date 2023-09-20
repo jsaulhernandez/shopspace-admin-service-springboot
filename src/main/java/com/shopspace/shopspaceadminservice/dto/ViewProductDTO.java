@@ -5,18 +5,16 @@ public class ViewProductDTO {
     private String image;
     private String color;
     private Integer stock;
-    private Integer status;
-    Long productId;
+    private Long productId;
 
     public ViewProductDTO() {
     }
 
-    public ViewProductDTO(Long id, String image, String color, Integer stock, Integer status, Long productId) {
+    public ViewProductDTO(Long id, String image, String color, Integer stock, Long productId) {
         this.id = id;
         this.image = image;
         this.color = color;
         this.stock = stock;
-        this.status = status;
         this.productId = productId;
     }
 
@@ -52,14 +50,6 @@ public class ViewProductDTO {
         this.stock = stock;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Long getProductId() {
         return productId;
     }
@@ -75,7 +65,6 @@ public class ViewProductDTO {
                 ", image='" + image + '\'' +
                 ", color='" + color + '\'' +
                 ", stock=" + stock +
-                ", status=" + status +
                 ", productId=" + productId +
                 '}';
     }
