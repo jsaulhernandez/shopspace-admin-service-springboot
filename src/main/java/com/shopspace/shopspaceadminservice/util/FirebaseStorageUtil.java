@@ -136,7 +136,7 @@ public class FirebaseStorageUtil {
      * @param folder folder where be the file
      * @return Blob
      */
-    private Blob getBlobFile(String name, String folder) {
+    public Blob getBlobFile(String name, String folder) {
         String path = folder + "/" + name;
         return this.download(path);
     }
@@ -146,7 +146,7 @@ public class FirebaseStorageUtil {
      * @param path folder and file name join
      * @return Blob
      */
-    private Blob download(String path) {
+    public Blob download(String path) {
         try {
             Bucket bucket = this.getBucket();
             logger.info("instantiating the bucket: {}", bucket.getName());
