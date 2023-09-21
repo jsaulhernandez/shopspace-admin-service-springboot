@@ -40,7 +40,7 @@ public class FileServiceImpl implements FileService {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         String name = fileUtil.getNameFromPath(path);
         String mimetype = fileUtil.mediaTypeFromName(name);
-        System.out.println("info => " + name + " - " +mimetype);
+
         Blob blob = firebaseStorageUtil.download(path);
 
         if (blob == null) throw new DataNotFoundException("The requested file doesn't exist");
