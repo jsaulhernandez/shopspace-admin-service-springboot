@@ -57,33 +57,10 @@ public class FirebaseStorageUtil {
 
     /**
      *
-     * @param path folder and file name join
-     * @return file
+     * @param base64 file in base64
+     * @param folder folder in firebase where file will be added
+     * @return file name uploaded
      */
-    private Blob getBlobFile(String path) {
-        try {
-            Bucket bucket = this.getBucket();
-            logger.info("instantiating the bucket: {}", bucket.getName());
-
-            return bucket.get(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     *
-     * @param name file name
-     * @param folder folder where be the file
-     * @return file
-     */
-    private Blob getBlobFile(String name, String folder) {
-        String path = folder + "/" + name;
-        logger.info("showing path: {}", path);
-        return this.getBlobFile(path);
-    }
-
     public String upload(String base64, String folder) {
         File file = null;
         Blob blob;
@@ -100,10 +77,17 @@ public class FirebaseStorageUtil {
             e.printStackTrace();
             return null;
         } finally {
-            fileUtil.safeCloseAndDelete(file);
+           fileUtil.safeCloseAndDelete(file);
         }
     }
 
+    /**
+     *
+     * @param file file to upload
+     * @param folder place where file will be located
+     * @return Blob
+     * @throws IOException throw exception if file is not converted to bytes
+     */
     public Blob upload(File file, String folder) throws IOException {
         boolean validate = fileUtil.validateFile(file, minFileSize, maxFileSize);
         if (!validate) return null;
@@ -111,59 +95,17 @@ public class FirebaseStorageUtil {
         byte[] fileData = FileUtils.readFileToByteArray(file);
 
         String path = folder + "/" + file.getName();
+        String mimeType = fileUtil.mediaTypeFromName(file.getName());
         Bucket bucket = this.getBucket();
 
-        return bucket.create(path, fileData);
+        return bucket.create(path, fileData, mimeType);
     }
 
-    public boolean exists(String name, String folder) {
-        try {
-            Blob blob = this.getBlobFile(name, folder);
-
-            return blob != null && blob.exists();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public Blob download(String path) {
-        logger.info("main route {}", path);
-        return this.getBlobFile(path);
-    }
-
-    public String update(String base64, String oldPath, String folder) {
-        try {
-            String oldName = fileUtil.getNameFromPath(oldPath);
-
-            if (base64 == null && oldName != null) this.delete(oldName, folder);
-            else if (StringUtils.isNotEmpty(base64) && base64.contentEquals("default")) return oldPath;
-
-            File file = fileUtil.base64ToFile(base64, oldName);
-            Blob blob = this.update(file, folder);
-
-            return blob.getName();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public Blob update(File file, String folder) {
-        try {
-            boolean delete = this.delete(file.getName(), folder);
-
-            if (!delete) logger.error("An error occurred while deleting the file because it does not exist");
-
-            return this.upload(file, folder);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
-    }
-
+    /**
+     *
+     * @param path include the folder and file name
+     * @return boolean if the file is deleted
+     */
     public boolean deleteWithPath(String path) {
         String name = fileUtil.getNameFromPath(path);
         String folder = fileUtil.getFolderFromPath(path);
@@ -171,16 +113,49 @@ public class FirebaseStorageUtil {
         return this.delete(name, folder);
     }
 
+    /**
+     *
+     * @param name file name
+     * @param folder place where is the file
+     * @return boolean if the file is deleted
+     */
     public boolean delete(String name, String folder) {
         try {
             Blob exists = this.getBlobFile(name, folder);
-
-            if (exists == null) return false;
 
             return exists.delete();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    /**
+     *
+     * @param name file name
+     * @param folder folder where be the file
+     * @return Blob
+     */
+    private Blob getBlobFile(String name, String folder) {
+        String path = folder + "/" + name;
+        return this.download(path);
+    }
+
+    /**
+     *
+     * @param path folder and file name join
+     * @return Blob
+     */
+    private Blob download(String path) {
+        try {
+            Bucket bucket = this.getBucket();
+            logger.info("instantiating the bucket: {}", bucket.getName());
+            logger.info("path of firebase: {}", path);
+
+            return bucket.get(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
