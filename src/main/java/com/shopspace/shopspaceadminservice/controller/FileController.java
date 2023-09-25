@@ -13,6 +13,6 @@ public class FileController {
 
     @GetMapping("/download")
     public ResponseEntity<byte[]> download(@RequestParam String path) {
-        return fileService.download(path);
+        return fileService.getFile(path);
     }
 }

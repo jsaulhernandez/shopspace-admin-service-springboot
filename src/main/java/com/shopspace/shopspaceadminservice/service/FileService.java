@@ -7,5 +7,5 @@ public interface FileService {
 
     boolean delete(String path);
 
-    ResponseEntity<byte[]> download(String path);
+    ResponseEntity<byte[]> getFile(String path);
 }
