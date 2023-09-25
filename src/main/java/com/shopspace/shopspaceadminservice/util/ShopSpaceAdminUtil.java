@@ -2,6 +2,11 @@ package com.shopspace.shopspaceadminservice.util;
 
 import com.google.common.net.HttpHeaders;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class ShopSpaceAdminUtil {
     public static String getClientIp(HttpServletRequest request) {
@@ -19,5 +24,18 @@ public class ShopSpaceAdminUtil {
         var ua = "";
         if (request != null) ua = request.getHeader(HttpHeaders.USER_AGENT);
         return ua;
+    }
+
+    public static MultiValueMap<String, String> getHeaders(Map<String, Collection<String>> oldHeaders) {
+        MultiValueMap<String, String> newHeaders = new LinkedMultiValueMap<>();
+
+        for (Map.Entry<String, Collection<String>> entry : oldHeaders.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString().replace("[", "").replace("]", "");
+
+            newHeaders.add(key, value);
+        }
+
+        return newHeaders;
     }
 }
