@@ -2,6 +2,8 @@ package com.shopspace.shopspaceadminservice.dto;
 
 public class ViewProductDTO {
     private Long id;
+    //can be a value (products/305e63dc-fb53-4ac8-91f7-76ecffed6588.jpeg) or contains "default",
+    //but never empty
     private String image;
     private String color;
     private Integer stock;
