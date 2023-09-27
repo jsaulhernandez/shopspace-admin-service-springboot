@@ -3,14 +3,16 @@ package com.shopspace.shopspaceadminservice.dto;
 public class BrandDTO {
     private Long id;
     private String name;
+    private String image;
     private Integer status;
 
     public BrandDTO() {
     }
 
-    public BrandDTO(Long id, String name, Integer status) {
+    public BrandDTO(Long id, String name, String image, Integer status) {
         this.id = id;
         this.name = name;
+        this.image = image;
         this.status = status;
     }
 
@@ -30,6 +32,14 @@ public class BrandDTO {
         this.name = name;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -40,6 +50,11 @@ public class BrandDTO {
 
     @Override
     public String toString() {
-        return "BrandDTO{" + "id=" + id + ", name='" + name + '\'' + ", status=" + status + '}';
+        return "BrandDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
